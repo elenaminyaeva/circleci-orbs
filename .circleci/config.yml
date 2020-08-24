@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  node: circleci/node@1.1.0
+  node: circleci/node@4.0.0
   gcp-gke: circleci/gcp-gke@1.1.0
   gcr: circleci/gcp-gcr@0.8.0
 jobs:
@@ -20,11 +20,9 @@ jobs:
       # Install npm
       - node/install-npm
       # Download and cache dependencies
-      - node/install
-          steps:
-            - run:
-                name: Install application dependencies
-                command: npm install
+      - run:
+          name: Install application dependencies
+          command: npm install
           # Save cache
           cache-key: package.json
           # Ignore non-checksum cache hits
