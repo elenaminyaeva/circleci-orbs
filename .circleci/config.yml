@@ -60,8 +60,10 @@ jobs:
       # Install `gcloud` and `kubectl` if not already installed.
       - gcp-gke/install
       # Initialize the `gcloud` CLI.
-      - run:
-          command: gcloud auth activate-service-account elenaminyaeva@gmail.com --key-file=/Users/lenaminyaeva/circleci-orbs/elena-circle-ci-demo-85c9d1af00a7.json
+      - run: echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+      - run: gcloud auth activate-service-acount --key-file=${HOME}/gcloud-service-key.json
+      - run: gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+      - run: gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
       - gcp-gke/update-kubeconfig-with-credentials:
           cluster: circle-ci-cluster
           gcloud-service-key: GCLOUD_SERVICE_KEY
