@@ -44,6 +44,11 @@ jobs:
     description: Deploy application to Google Kubernetes Engine
     machine: true
     parameters:
+            perform-login:
+                default: false
+                description: |
+                  Whether to perform a login with the gcloud CLI.
+                type: boolean
             gcloud-service-key:
                 default: GCLOUD_SERVICE_KEY
                 description: The gcloud service key
@@ -60,11 +65,11 @@ jobs:
       # Install `gcloud` and `kubectl` if not already installed.
       - gcp-gke/install
       # Initialize the `gcloud` CLI.
-      - gcp-gke/update-kubeconfig-with-credentials:
-          cluster: circle-ci-cluster
-          gcloud-service-key: GCLOUD_SERVICE_KEY
-          google-compute-zone: GOOGLE_COMPUTE_ZONE
-          google-project-id: GOOGLE_PROJECT_ID
+      # - gcp-gke/update-kubeconfig-with-credentials:
+      #     cluster: circle-ci-cluster
+      #     gcloud-service-key: GCLOUD_SERVICE_KEY
+      #     google-compute-zone: GOOGLE_COMPUTE_ZONE
+      #     google-project-id: GOOGLE_PROJECT_ID
       # Update a deployment's Docker image.
       - gcp-gke/rollout-image:
           cluster: circle-ci-cluster
