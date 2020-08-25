@@ -60,7 +60,8 @@ jobs:
       # Install `gcloud` and `kubectl` if not already installed.
       - gcp-gke/install
       # Initialize the `gcloud` CLI.
-      
+      - run:
+          command: gcloud auth login elenaminyaeva@gmail.com
       - gcp-gke/update-kubeconfig-with-credentials:
           cluster: circle-ci-cluster
           gcloud-service-key: GCLOUD_SERVICE_KEY
