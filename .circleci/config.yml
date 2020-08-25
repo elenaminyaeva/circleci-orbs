@@ -74,7 +74,7 @@ jobs:
           cluster: circle-ci-cluster
           deployment: circle-ci-cluster
           container: dominic-backend
-          image: gcr.io/circle-ci-demo/circle-gke:v2
+          image: gcr.io/circle-ci-demo/circle-gke
 
 workflows:
   build_update_deploy:
