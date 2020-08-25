@@ -1,31 +1,27 @@
 version: 2.1
+
 orbs:
-  node: circleci/node@4.0.0
+  node: circleci/node@1.1.6
   gcp-gke: circleci/gcp-gke@0.1.0
   gcr: circleci/gcp-gcr@0.8.0
+
 jobs:
   build:
     description: Install npm
     # machine option runs your jobs in a dedicated, ephemeral VM that has the following specifications:
     machine: true
-    parameters:
-      with-cache:
-        default: true
-        description: Cache your node packages automatically for faster install times.
-        type: boolean
     steps:
       - checkout
       # Install node
-      - run:
-          name: Uninstall application dependencies
-          command: nvm use system && npm uninstall -g a_module
       - node/install
       # Install npm
       - node/install-npm
       # Download and cache dependencies
-      - run:
-          name: Install application dependencies
-          command: npm install
+      - node/with-cache:
+          steps:
+            - run:
+                name: Install application dependencies
+                command: npm install
           # Save cache
           cache-key: package.json
           # Ignore non-checksum cache hits
@@ -38,10 +34,11 @@ jobs:
       - gcr/gcr-auth
       - gcr/build-image:
           image: circle-gke
-          tag: "v2" #Change version number e.g to 'v3' when updating application
+          tag: "v2"
       - gcr/push-image:
           image: circle-gke
-          tag: "v2" #Change version number e.g to 'v3' when updating application
+          tag: "v2"
+
     
   deploy:
     description: Deploy application to Google Kubernetes Engine
@@ -51,11 +48,12 @@ jobs:
       - gcp-gke/install
       # Initialize the `gcloud` CLI.
       - gcp-gke/init
-      # Update a deployment Docker image.
+      # Update a deployment's Docker image.
       - gcp-gke/rollout-image:
           deployment: circle-ci-cluster
           container: dominic-backend
-          image: gcr.io/circle-ci-demo/circle-gke:v2 # change version when updating
+          image: gcr.io/circle-ci-demo/circle-gke:v2
+
 workflows:
   build_update_deploy:
     jobs:
@@ -66,3 +64,4 @@ workflows:
       - deploy:
           requires:
             - Build-Push-Image-Docker
+      
