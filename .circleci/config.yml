@@ -60,9 +60,8 @@ jobs:
       # Install `gcloud` and `kubectl` if not already installed.
       - gcp-gke/install
       # Initialize the `gcloud` CLI.
-      - run:          
-        name: Auth gCloud SDK          
-        command: bash ./deploy/gcloud-auth.sh
+      - run:
+          command: bash ./deploy/gcloud-auth.sh
       - gcp-gke/update-kubeconfig-with-credentials:
           cluster: circle-ci-cluster
           gcloud-service-key: GCLOUD_SERVICE_KEY
