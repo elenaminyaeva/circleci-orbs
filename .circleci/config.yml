@@ -61,7 +61,7 @@ jobs:
       - gcp-gke/install
       # Initialize the `gcloud` CLI.
       - run:
-          command: gcloud config set account elenaminyaeva@gmail.com
+          command: gcloud auth activate-service-account elena
       - gcp-gke/update-kubeconfig-with-credentials:
           cluster: circle-ci-cluster
           gcloud-service-key: GCLOUD_SERVICE_KEY
